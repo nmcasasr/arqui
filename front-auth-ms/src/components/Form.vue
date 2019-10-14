@@ -28,7 +28,24 @@ export default {
   } , 
   methods:{
     sendWithGraph(){
-      console.log(`sending with graphQL:${this.firstName}, ${this.lastName}, ${this.username}, ${this.password}`)
+      const query =  `mutation createUser($firstname: String!, $lastname: String!, $username: String!, password: String!){
+         createUser(firtname: $firstname, lastname:$lastname, username:$username, password:$password)}`;
+      const {firstName,lastName,username,password} = this;
+      fetch('localhost:3000',
+      {
+        methods: 'POST',
+        headers: {
+          'Content-Type' : 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          variables: {firstName,lastName,username,password},
+        })
+      })
+      .then(r => r.json())
+      .then(data => console.log('data retuned:', data));
+      //console.log(`sending with graphQL:${this.firstName}, ${this.lastName}, ${this.username}, ${this.password}`)
     },
     sendWithRest(){
       if((this.firstName == "")||(this.lastName == "")||(this.username == "") ||(this.password == "") ){
