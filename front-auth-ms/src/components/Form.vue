@@ -45,17 +45,7 @@ export default {
   } , 
   methods:{
     sendWithGraphQL(){
-<<<<<<< HEAD
-      const {firstName,lastName,username,password, message} = this;
-      let respose = "";
-      console.log(process.env.GRAPH_URL);
-      fetch('http://localhost:5000/graphql',{
-        method: 'POST',
-        body: JSON.stringify({query:`mutation{createUser(user:{firstName:"${firstName}" lastName:"${lastName}" username:"${username}" password:"${password}"}){id firstName lastName username password}}`}),
-        headers: {
-          'Content-Type' : 'application/json',
-          'Accept': 'application/json',
-=======
+
       if((this.firstName == "")||(this.lastName == "")||(this.username == "") ||(this.password == "")){
         this.error = true;
         this.created = false;
@@ -84,7 +74,6 @@ export default {
             this.created =true;
 
           } )
->>>>>>> 6ca18e823c46d6491285b24622705e66638df949
         }
     },
     sendWithRest(){
