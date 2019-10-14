@@ -6,10 +6,11 @@
       Apellido: <input type="text" v-model="lastName"><br>
       Usuario: <input type="text" v-model="username"><br>
       Contraseña: <input type="password" v-model="password"><br>
-      <button v-on:click="sendWithGraph">Crear con GraphQL</button>
+      <button v-on:click=" sendWithGraphQL">Crear con GraphQL</button>
       <button v-on:click="sendWithRest">Crear con REST</button>
     </form>
     <p v-if="error">Error: Existe algun campo incompleto. Por favor, revise el formulario y oprima el boton de nuevo</p>
+<<<<<<< HEAD
     <div v-if="created">
       <h2>Usuario creado con los siguientes campos:</h2>
       <ul>
@@ -19,10 +20,14 @@
         <li>{{responsePassword}}</li>
       </ul>
     </div>
+=======
+    <p>{{message}}</p>
+>>>>>>> 93318cd79a227b9ad8790b8d4bc596bb8a1b11da
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name:'Form',
   data(){
@@ -31,34 +36,35 @@ export default {
       lastName: "",
       username: "",
       password: "",
+<<<<<<< HEAD
       responseFirstName: "",
       responseLastName: "",
       responseUsername: "",
       responsePassword: "",
       error: false,
       created: false
+=======
+      message: "No se ha creado  un nuevo usuario",
+      error: false
+>>>>>>> 93318cd79a227b9ad8790b8d4bc596bb8a1b11da
     }
   } , 
   methods:{
-    sendWithGraph(){
-      const query =  `mutation createUser($firstname: String!, $lastname: String!, $username: String!, password: String!){
-         createUser(firtname: $firstname, lastname:$lastname, username:$username, password:$password)}`;
-      const {firstName,lastName,username,password} = this;
-      fetch('localhost:3000',
-      {
-        methods: 'POST',
+    sendWithGraphQL(){
+      const {firstName,lastName,username,password, message} = this;
+      let respose = "";
+      fetch("http://localhost:5000/graphql",{
+        method: 'POST',
+        body: JSON.stringify({query:`mutation{createUser(user:{firstName:"${firstName}" lastName:"${lastName}" username:"${username}" password:"${password}"}){id firstName lastName username password}}`}),
         headers: {
           'Content-Type' : 'application/json',
           'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-          variables: {firstName,lastName,username,password},
-        })
+        }
       })
-      .then(r => r.json())
-      .then(data => console.log('data retuned:', data));
-      //console.log(`sending with graphQL:${this.firstName}, ${this.lastName}, ${this.username}, ${this.password}`)
+        .then(res => res.json())
+        .catch(err => console.error(err))
+        .then(data => this.message = ("Usuario creado satisfactoriamente desde API Gateway: Nombre del usuario: " + JSON.stringify(data.data.createUser.firstName) + " " + JSON.stringify(data.data.createUser.lastName)+ ", Username: "+ JSON.stringify(data.data.createUser.username)))
+        //this.message = ("Usuario creado satisfactoriamente desde API Gateway:" + respose);
     },
     sendWithRest(){
       if((this.firstName == "")||(this.lastName == "")||(this.username == "") ||(this.password == "") ){
