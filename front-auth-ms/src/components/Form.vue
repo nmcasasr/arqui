@@ -32,7 +32,8 @@ export default {
     sendWithGraphQL(){
       const {firstName,lastName,username,password, message} = this;
       let respose = "";
-      fetch("http://localhost:5000/graphql",{
+      console.log(process.env.GRAPH_URL);
+      fetch('http://localhost:5000/graphql',{
         method: 'POST',
         body: JSON.stringify({query:`mutation{createUser(user:{firstName:"${firstName}" lastName:"${lastName}" username:"${username}" password:"${password}"}){id firstName lastName username password}}`}),
         headers: {

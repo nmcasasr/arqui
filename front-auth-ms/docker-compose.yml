@@ -1,0 +1,16 @@
+version: '2.1'
+services:
+  front-auth-ms:
+    build: .
+    environment:
+      PORT: '8080'
+      SHOW_URLS: 'true'
+      GRAPH_URL: 'http://sa-api:5000/graphql'
+      REST_URL: 'http://sa-auth-ms:4000/sa-auth-ms/resources/users'
+    ports:
+      - '8080:8080'
+    networks:
+      - sa-auth-ms_default
+networks:
+  sa-auth-ms_default:
+    external: true
