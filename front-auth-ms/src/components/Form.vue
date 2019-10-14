@@ -10,7 +10,15 @@
       <button v-on:click="sendWithRest">Crear con REST</button>
     </form>
     <p v-if="error">Error: Existe algun campo incompleto. Por favor, revise el formulario y oprima el boton de nuevo</p>
-    <p>{{firstName}}</p>
+    <div v-if="created">
+      <h2>Usuario creado con los siguientes campos:</h2>
+      <ul>
+        <li>Nombre: {{responseFirstName}}</li>
+        <li>{{responseLastName}}</li>
+        <li>{{responseUsername}}</li>
+        <li>{{responsePassword}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -23,7 +31,12 @@ export default {
       lastName: "",
       username: "",
       password: "",
-      error: false
+      responseFirstName: "",
+      responseLastName: "",
+      responseUsername: "",
+      responsePassword: "",
+      error: false,
+      created: false
     }
   } , 
   methods:{
@@ -61,10 +74,17 @@ export default {
           username: this.username,
           password: this.password
         })
-        .then(function (response) {
-          console.log(response);
+        .then( (response) => {
+          console.log(response.data.firstName);
+
+          this.responseFirstName = response.data.firstName;
+          this.responseLastName = response.data.lastName;
+          this.responseUsername = response.data.username;
+          this.responsePassword = response.data.password;
+
+          this.created =true;
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
 
