@@ -9,6 +9,8 @@
       <button v-on:click="sendWithGraph">Crear con GraphQL</button>
       <button v-on:click="sendWithRest">Crear con REST</button>
     </form>
+    <p v-if="error">Error: Existe algun campo incompleto. Por favor, revise el formulario y oprima el boton de nuevo</p>
+    <p>{{firstName}}</p>
   </div>
 </template>
 
@@ -17,10 +19,11 @@ export default {
   name:'Form',
   data(){
     return{
-      firstName: null,
-      lastName: null,
-      username: null,
-      password: null
+      firstName: "",
+      lastName: "",
+      username: "",
+      password: "",
+      error: false
     }
   } , 
   methods:{
@@ -28,7 +31,29 @@ export default {
       console.log(`sending with graphQL:${this.firstName}, ${this.lastName}, ${this.username}, ${this.password}`)
     },
     sendWithRest(){
-      console.log(`sending with rest:${this.firstName}, ${this.lastName}, ${this.username}, ${this.password}`)
+      if((this.firstName == "")||(this.lastName == "")||(this.username == "") ||(this.password == "") ){
+        this.error = true; 
+      }else{
+        this.error = false;
+
+        const axios = require('axios').default;
+
+        axios.post('http://localhost:4000/sa-auth-ms/resources/users', {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          username: this.username,
+          password: this.password
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+        this.firstName = this.lastName = this.username = this.password = "";
+
+      }
     }
   }
 }
