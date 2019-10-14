@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/circulito.jpg">
+    <img alt="Vue logo" src="./assets/un.jpg">
     <Form/>
   </div>
 </template>
@@ -24,5 +24,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+img{
+  width: 200px;
+  height: 200px;
+  margin: 5px auto;
 }
 </style>
